@@ -1,0 +1,128 @@
+(() => {
+  'use strict';
+  const config = window.WTS_CONFIG || {};
+  document.querySelectorAll('[data-link]').forEach(link => {
+    const value = config.links && config.links[link.dataset.link];
+    if (!value) return;
+    try {
+      const url = new URL(value);
+      if (url.protocol !== 'https:') return;
+      link.href = url.href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+      link.removeAttribute('aria-disabled'); link.title = `Open ${link.dataset.link}`;
+      if (link.classList.contains('signal-console__cta')) link.textContent = '↗ JOIN THE CONVERSATION';
+    } catch (_) { /* Leave unconfigured links inactive. */ }
+  });
+  const address = typeof config.contractAddress === 'string' ? config.contractAddress.trim() : '';
+  if (address) {
+    const wrapper = document.getElementById('contract-wrap'); wrapper.hidden = false;
+    document.getElementById('contract-value').textContent = address;
+    document.getElementById('copy-contract').addEventListener('click', async () => {
+      const status = document.getElementById('copy-status');
+      try { await navigator.clipboard.writeText(address); status.textContent = 'Contract address copied.'; }
+      catch (_) { status.textContent = 'Clipboard unavailable; select the address to copy it.'; }
+    });
+  }
+  const elements = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    }), {threshold: .12});
+    elements.forEach(element => { observer.observe(element); element.classList.add('reveal-ready'); });
+  } else elements.forEach(element => element.classList.add('visible'));
+
+  const options = {
+    republican: 'Imagine Republicans holding both chambers. How might the relationship between Congress and the White House shape the story?',
+    divided: 'Imagine the parties splitting control of the House and Senate. Which negotiations and alliances might shape the next chapter?',
+    democratic: 'Imagine Democrats holding both chambers. What might change as Congress and the White House navigate divided government?'
+  };
+  document.querySelectorAll('.scenario').forEach(button => button.addEventListener('click', () => {
+    if (!options[button.dataset.scenario]) return;
+    document.querySelectorAll('.scenario').forEach(other => { const active = other === button; other.classList.toggle('active', active); other.setAttribute('aria-pressed', String(active)); });
+    document.getElementById('scenario-text').textContent = options[button.dataset.scenario];
+  }));
+
+  const button = document.getElementById('western-play');
+  let context = null, timer = null;
+  const reset = () => { button.textContent = '▶ PLAY THE SIGNAL'; button.setAttribute('aria-pressed', 'false'); };
+  button.addEventListener('click', async () => {
+    if (context) { clearTimeout(timer); await context.close(); context = null; reset(); return; }
+    const AudioClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioClass) { button.textContent = 'AUDIO UNAVAILABLE'; button.disabled = true; return; }
+    try {
+      context = new AudioClass(); await context.resume(); const start = context.currentTime + .05;
+      [110,164.81,220,196,164.81,130.81,146.83,110].forEach((frequency, i) => {
+        const oscillator = context.createOscillator(), gain = context.createGain(), t = start + i * .75;
+        oscillator.type = 'sine'; oscillator.frequency.value = frequency;
+        gain.gain.setValueAtTime(.0001,t); gain.gain.exponentialRampToValueAtTime(.055,t+.16); gain.gain.exponentialRampToValueAtTime(.0001,t+.85);
+        oscillator.connect(gain); gain.connect(context.destination); oscillator.start(t); oscillator.stop(t+.9);
+      });
+      button.textContent = '■ STOP THE SIGNAL'; button.setAttribute('aria-pressed','true');
+      timer = setTimeout(async () => { if (context) await context.close(); context = null; reset(); },6400);
+    } catch (_) { if (context) await context.close(); context = null; button.textContent = 'AUDIO UNAVAILABLE'; }
+  });
+})();
+
+/* Progressive enhancement: the ship stays visible without JS or when motion is reduced. */
+(() => {
+  const section = document.getElementById('outro');
+  const ship = section && section.querySelector('.departure-ship');
+  const button = document.getElementById('departure-replay');
+  if (!section || !ship || !button) return;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let hasStarted = false;
+  let inView = false;
+  let running = false;
+
+  const pauseIfNeeded = () => {
+    section.classList.toggle('flight-paused', running && (document.hidden || !inView));
+  };
+  const finish = () => {
+    running = false;
+    section.classList.remove('is-departing', 'flight-paused');
+    section.classList.add('has-departed');
+    section.dataset.flightState = motion.matches ? 'reduced-motion' : 'complete';
+    button.disabled = false;
+    button.textContent = '↗ REPLAY DEPARTURE';
+  };
+  const start = () => {
+    if (motion.matches || running) return;
+    hasStarted = true;
+    running = true;
+    section.classList.remove('has-departed', 'is-departing');
+    // Flush a single local layout only when restarting this short decorative sequence.
+    void ship.offsetWidth;
+    section.classList.add('is-departing');
+    section.dataset.flightState = 'playing';
+    button.disabled = true;
+    button.textContent = '↗ DEPARTING…';
+    pauseIfNeeded();
+  };
+  const syncMotion = () => {
+    button.hidden = motion.matches;
+    if (motion.matches) {
+      finish();
+    } else if (!hasStarted && inView) {
+      start();
+    }
+  };
+  ship.addEventListener('animationend', event => {
+    if (event.target === ship && event.animationName === 'pf-departure') finish();
+  });
+  button.addEventListener('click', start);
+  document.addEventListener('visibilitychange', pauseIfNeeded);
+  if (motion.addEventListener) motion.addEventListener('change', syncMotion);
+  else if (motion.addListener) motion.addListener(syncMotion);
+  button.hidden = motion.matches;
+  section.dataset.flightState = motion.matches ? 'reduced-motion' : 'ready';
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      inView = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.35;
+      if (inView && !hasStarted && !motion.matches) start();
+      pauseIfNeeded();
+    }, { threshold: 0.35 });
+    observer.observe(section);
+  } else {
+    // No visibility observer: keep the static illustration and allow user-triggered playback.
+    inView = true;
+  }
+})();

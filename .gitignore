@@ -4,4 +4,6 @@ Thumbs.db
 .vscode/
 .idea/
 WTS_story_images/
+WTS_corrected_story_images/
 *.rar
+*.zip

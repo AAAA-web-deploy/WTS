@@ -126,3 +126,49 @@
     inView = true;
   }
 })();
+
+/* Story mosaic lightbox: keep captions off the gallery tiles, available on demand. */
+(() => {
+  const mosaic = document.querySelector('.story-mosaic');
+  const dialog = document.getElementById('story-lightbox');
+  if (!mosaic || !dialog || typeof dialog.showModal !== 'function') return;
+  const image = document.getElementById('story-lightbox-image');
+  const kicker = document.getElementById('story-lightbox-kicker');
+  const title = document.getElementById('story-lightbox-title');
+  const desc = document.getElementById('story-lightbox-desc');
+  const closeBtn = document.getElementById('story-lightbox-close');
+  let lastFocus = null;
+
+  const openScene = (scene) => {
+    const tileImg = scene.querySelector('img');
+    if (!tileImg) return;
+    lastFocus = document.activeElement;
+    image.src = tileImg.currentSrc || tileImg.src;
+    image.width = tileImg.naturalWidth || Number(tileImg.getAttribute('width')) || 1916;
+    image.height = tileImg.naturalHeight || Number(tileImg.getAttribute('height')) || 821;
+    image.alt = tileImg.alt || '';
+    kicker.textContent = scene.dataset.scene || '';
+    title.textContent = scene.dataset.title || '';
+    desc.textContent = scene.dataset.desc || '';
+    dialog.showModal();
+    closeBtn.focus();
+  };
+
+  mosaic.addEventListener('click', (event) => {
+    const button = event.target.closest('.story-scene__tile');
+    if (!button) return;
+    const scene = button.closest('.story-scene');
+    if (scene) openScene(scene);
+  });
+
+  const close = () => {
+    if (dialog.open) dialog.close();
+  };
+  closeBtn.addEventListener('click', close);
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) close();
+  });
+  dialog.addEventListener('close', () => {
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+  });
+})();

@@ -77,9 +77,9 @@ body{background:var(--navy);color:var(--white);padding-top:0}
 }
 .hero-copy{width:min(560px,46%);margin-left:0}
 .hero-dogboy{
-  right:11%;
+  right:0;
   bottom:0;
-  max-width:min(60vw,800px);
+  max-width:min(56vw,740px);
   max-height:calc(100svh - 96px);
 }
 .hero h1 span,.story h2 span,.crew-header h2 span,.western h2 span,.mission h2 span,.vision h2 span,.outro h2 span{color:var(--mint)}

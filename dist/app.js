@@ -13,13 +13,31 @@
     } catch (_) { /* Leave unconfigured links inactive. */ }
   });
   const address = typeof config.contractAddress === 'string' ? config.contractAddress.trim() : '';
-  if (address) {
-    const wrapper = document.getElementById('contract-wrap'); wrapper.hidden = false;
-    document.getElementById('contract-value').textContent = address;
-    document.getElementById('copy-contract').addEventListener('click', async () => {
-      const status = document.getElementById('copy-status');
-      try { await navigator.clipboard.writeText(address); status.textContent = 'Contract address copied.'; }
-      catch (_) { status.textContent = 'Clipboard unavailable; select the address to copy it.'; }
+  const copyBtn = document.getElementById('copy-contract');
+  const valueEl = document.getElementById('contract-value');
+  const status = document.getElementById('copy-status');
+  if (copyBtn) {
+    if (address && valueEl) {
+      valueEl.textContent = address;
+      valueEl.hidden = false;
+    }
+    copyBtn.addEventListener('click', async () => {
+      if (!address) {
+        status.textContent = 'Contract address is not published yet.';
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(address);
+        status.textContent = 'Contract address copied.';
+        copyBtn.classList.add('is-copied');
+        copyBtn.querySelector('.ca-copy__label').textContent = 'COPIED';
+        setTimeout(() => {
+          copyBtn.classList.remove('is-copied');
+          copyBtn.querySelector('.ca-copy__label').textContent = 'COPY CA';
+        }, 1600);
+      } catch (_) {
+        status.textContent = 'Clipboard unavailable; select the address to copy it.';
+      }
     });
   }
   const elements = document.querySelectorAll('[data-reveal]');

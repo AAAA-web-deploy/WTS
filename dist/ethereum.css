@@ -180,32 +180,47 @@ body{background:var(--navy);color:var(--white);padding-top:0}
   .story-scene__title{font-size:13px}
 }
 .story-scene--01{grid-column:1/-1}
-.story-scene--02{grid-column:span 1}
-.story-scene--03{grid-column:span 2}
-.story-scene--04{grid-column:span 1}
-.story-scene--05{grid-column:span 2}
+.story-scene--02{grid-column:1}
+.story-scene--03{grid-column:2/-1}
+.story-scene--04{
+  grid-column:1;
+  /* Pull up into the empty space under the shorter scene 02 */
+  margin-top:calc((100% + 12px) * -941 / 1672);
+  z-index:1;
+}
+.story-scene--05{grid-column:2/-1}
 .story-scene--06{
-  grid-column:span 1;
-  grid-row:span 2;
-  align-self:stretch;
-  height:100%;
-  display:flex;
+  grid-column:1;
+  align-self:start;
+  /*
+    04's lift collapses its grid-row to scene 05's height, so 06 must
+    use a smaller lift: same as 04, then add back (04h - 05h).
+  */
+  margin-top:calc(
+    (100% + 12px) * -941 / 1672
+    + 100%
+    - (200% + 12px) * 724 / 2172
+  );
+  z-index:1;
 }
-.story-scene--06 .story-scene__tile{
-  flex:1 1 auto;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.story-scene--07{
+  grid-column:2/-1;
+  /* Sits on the same grid row as 06, already flush under 05 */
+  margin-top:0;
+  z-index:1;
 }
-.story-scene--06 .story-scene__tile img{
-  width:100%;
-  height:100%;
-  max-height:100%;
-  object-fit:contain;
+.story-scene--08{
+  grid-column:2/-1;
+  /* Lift into the hole under short 07 beside tall 06 */
+  margin-top:calc(
+    (100% - 12px) / 2 * -1672 / 941
+    + ((100% - 12px) / 2 + 12px) * 941 / 1672
+    - (100% - 12px) / 2
+    + 200% * 724 / 2172
+    + 3px
+  );
+  z-index:1;
 }
-.story-scene--07{grid-column:span 2}
-.story-scene--08{grid-column:span 2}
 .story-mosaic-foot{margin-top:2px}
 .story-lightbox{
   border:0;
@@ -275,13 +290,13 @@ body{background:var(--navy);color:var(--white);padding-top:0}
     gap:12px;
   }
   .story-scene--01{grid-column:1/-1}
-  .story-scene--02{grid-column:span 1}
-  .story-scene--03{grid-column:span 1}
-  .story-scene--04{grid-column:span 1}
-  .story-scene--05{grid-column:span 1}
-  .story-scene--06{grid-column:span 1;grid-row:span 2}
-  .story-scene--07{grid-column:span 1}
-  .story-scene--08{grid-column:span 1}
+  .story-scene--02,
+  .story-scene--03,
+  .story-scene--04,
+  .story-scene--05,
+  .story-scene--07,
+  .story-scene--08{grid-column:span 1;margin-top:0}
+  .story-scene--06{grid-column:span 1;margin-top:0}
 }
 @media(max-width:560px){
   .site-header__inner{padding:8px 3%;gap:8px}

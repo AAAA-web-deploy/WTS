@@ -4,10 +4,10 @@ html{scroll-padding-top:84px}
 body{background:var(--navy);color:var(--white);padding-top:0}
 .brand{display:inline-flex;align-items:center;gap:10px;line-height:1.05;min-width:0;flex:1 1 auto}
 .brand-logo{width:40px;height:40px;object-fit:contain;flex:none;border:1px solid #aaa3ff;box-shadow:0 0 18px #627eea35}
-.brand-text{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand-text{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
 .brand .brand-wordmark{color:var(--white);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand .brand-wordmark>span{color:var(--mint)}
-.brand-ticker{flex:none;color:#b4b9e1;font:700 11px/1 'Space Grotesk','LocalSpace',Arial,sans-serif;letter-spacing:.14em}
+.brand-ticker{color:#b4b9e1;font:700 10px/1 'Space Grotesk','LocalSpace',Arial,sans-serif;letter-spacing:.16em}
 .site-header{
   position:fixed;
   top:0;
@@ -61,8 +61,8 @@ body{background:var(--navy);color:var(--white);padding-top:0}
 .ca-copy.is-copied{background:#282650;border-color:#c7c2ff;color:#e7e5ff}
 .ca-copy__value{max-width:9em;overflow:hidden;text-overflow:ellipsis}
 .hero{background-color:#080d1c;padding-top:76px}.hero:before{background-color:#080d1c}
-.hero-inner{padding-left:3%;padding-right:5%}
-.hero-copy{width:min(590px,56%);margin-left:0}
+.hero-inner{max-width:none;padding-left:2%;padding-right:5%}
+.hero-copy{width:min(590px,52%);margin-left:0}
 .hero h1 span,.story h2 span,.crew-header h2 span,.western h2 span,.mission h2 span,.vision h2 span,.outro h2 span{color:var(--mint)}
 .btn{border-color:#aaa3ff;background:#aaa3ff;color:#101226;transition:background .2s,color .2s,transform .2s,border-color .2s}
 .btn:hover{background:#c7c2ff;border-color:#c7c2ff;transform:translateY(-2px)}
@@ -317,7 +317,7 @@ body{background:var(--navy);color:var(--white);padding-top:0}
 .scenario:focus-visible,.social:focus-visible,.source-link:focus-visible,.btn:focus-visible,.western-play:focus-visible,.departure-replay:focus-visible{outline:3px solid #c7c2ff;outline-offset:4px}
 .outro-flight .outro-kicker,.outro-flight .outro-end{color:#b4b9e1}
 @media(min-width:701px) and (max-width:960px){
-  .hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:center;padding:60px 4% 75px 3%}
+  .hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:center;padding:60px 4% 75px 2%}
   .hero-copy{width:auto;min-width:0}
   .hero h1{font-size:clamp(62px,9vw,88px);max-width:100%;overflow-wrap:normal}
   .hero-dogboy{position:relative;right:auto;bottom:auto;width:100%;height:auto;max-width:100%;max-height:none}

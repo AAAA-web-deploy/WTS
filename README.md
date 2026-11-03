@@ -31,6 +31,7 @@ Edit `dist/config.js` and supply the verified contract address and official HTTP
 - `dist/ethereum.css`: Ethereum-inspired blue and violet palette, visible logo, spacing, and responsive refinements.
 - `dist/config.js` and `dist/app.js`: configuration, scenario selector, scroll reveals, optional synthesized sound, and the reference-style departure animation.
 - `dist/assets/`: approved logo, banner and story imagery, the four portraits, and three new visual assets for the rebuilt layout. No generated artwork has text.
+- `dist/assets/story/01-the-prophecy.png` … `08-the-family-that-could-have-been.png`: eight-scene story mosaic used by the `#story` section.
 - `dist/assets/fonts/`: locally hosted fallback fonts and license. Barlow Condensed and Space Grotesk are loaded from Google Fonts when reachable to match the reference; local alternatives keep the site readable if the font service is unavailable.
 
 The election-night scenarios are speculative and the holographic map is decorative, not an election result. The project and visual story are fictional, independent satire; the site does not imply endorsement by the individuals depicted or Lucasfilm. Images preserve their proportions and are not cropped by CSS.

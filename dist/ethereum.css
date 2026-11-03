@@ -19,6 +19,125 @@ body{background:var(--navy);color:var(--white)}
 .story-scenes{display:grid;gap:10px}
 .story-scenes img{display:block;width:100%;height:auto;object-fit:contain}
 .story p,.mission-body,.mission-lead,.crew-intro,.vision-sub{font-size:16px;line-height:1.75}
+
+/* Eight-scene story mosaic */
+.story-wrap--mosaic{
+  grid-template-columns:1fr;
+  gap:48px;
+  max-width:1180px;
+  align-items:stretch;
+}
+.story-wrap--mosaic .story-copy{max-width:720px}
+.story-wrap--mosaic .story-copy p{max-width:none}
+.story-mosaic{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:22px 18px;
+  align-items:start;
+  width:100%;
+  min-width:0;
+}
+.story-scene{
+  margin:0;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.story-scene__media{
+  min-width:0;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid #414a79;
+  background:linear-gradient(160deg,#1a2140,#0d1428);
+  box-shadow:0 22px 48px #02081473;
+}
+.story-scene__media img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:contain;
+  object-position:center;
+}
+.story-scene__caption{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:0 4px 2px;
+}
+.story-scene__num{
+  flex:none;
+  min-width:2.2em;
+  color:var(--mint);
+  font:700 12px/1.2 'Space Grotesk','LocalSpace',sans-serif;
+  letter-spacing:.18em;
+  padding-top:3px;
+}
+.story-scene__text h3{
+  margin:0 0 6px;
+  color:var(--white);
+  font:800 clamp(18px,2.1vw,26px)/1.05 'Barlow Condensed',Impact,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.story-scene__text p{
+  margin:0;
+  max-width:none;
+  color:#c2c9e0;
+  font-size:14px;
+  line-height:1.55;
+}
+.story-scene--01{grid-column:1/-1}
+.story-scene--02{grid-column:1/span 6}
+.story-scene--03{grid-column:7/span 6}
+.story-scene--04{grid-column:1/span 5}
+.story-scene--05{
+  grid-column:6/span 7;
+  align-self:center;
+}
+.story-scene--06{
+  grid-column:1/span 4;
+  grid-row:span 2;
+  height:100%;
+  justify-content:flex-start;
+  gap:14px;
+}
+.story-scene--07{grid-column:5/span 8}
+.story-scene--08{grid-column:5/span 8}
+.story-mosaic-foot{margin-top:4px}
+.story-scene--01 .story-scene__media{border-radius:18px}
+@media(max-width:960px){
+  .story-wrap--mosaic{gap:36px}
+  .story-mosaic{gap:18px 14px}
+  .story-scene--02,.story-scene--03{grid-column:span 6}
+  .story-scene--04{grid-column:1/span 5}
+  .story-scene--05{grid-column:6/span 7}
+  .story-scene--06{grid-column:1/span 4;grid-row:span 2}
+  .story-scene--07,.story-scene--08{grid-column:5/span 8}
+}
+@media(max-width:760px){
+  .story-wrap--mosaic{gap:30px}
+  .story-mosaic{
+    grid-template-columns:1fr;
+    gap:26px;
+  }
+  .story-scene--01,
+  .story-scene--02,
+  .story-scene--03,
+  .story-scene--04,
+  .story-scene--05,
+  .story-scene--06,
+  .story-scene--07,
+  .story-scene--08{
+    grid-column:1;
+    grid-row:auto;
+    align-self:stretch;
+  }
+  .story-scene__media{border-radius:14px}
+  .story-scene__text h3{font-size:22px}
+  .story-scene__text p{font-size:14px;line-height:1.55}
+  .story-mosaic-foot{flex-wrap:wrap}
+}
 .crew-header{gap:36px}.manga-strip{align-items:stretch}
 .manga-info{display:flex;flex-direction:column;align-items:flex-start;flex:1}
 .manga-info h3{overflow-wrap:anywhere;max-width:100%}
@@ -47,6 +166,8 @@ body{background:var(--navy);color:var(--white)}
   .hero-actions{gap:9px}.hero-actions .btn{font-size:11px;min-height:44px;display:inline-flex;align-items:center}
   .story{padding:70px 6% 80px}.story p,.mission-body,.mission-lead,.vision-sub{font-size:15px;line-height:1.7}
   .story-scenes{gap:7px}.art-foot{line-height:1.6}
+  .story-wrap--mosaic .story-copy{max-width:none}
+  .story-scene__caption{gap:10px}
   .crew-header{gap:16px}.crew-intro{font-size:14px}
   .manga-info .crew-role{font-size:13px;line-height:1.5;min-height:0}
   .manga-info .crew-joke{font-size:10px!important;line-height:1.45;margin-top:14px}
